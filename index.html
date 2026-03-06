@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:wght@300..800&family=Playfair+Display:wght@400..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
     <div id="loading-screen">
@@ -86,7 +87,7 @@
                 </div>
             </div>
           </div>
-          <img src="Profile_Pic.png" alt="">
+          <img src="Profile_Pic.png" alt="Profile picture of Sai">
         </div>
     </section>
     <section class="about" id="about" >
@@ -270,6 +271,9 @@
           </div>
           <div class="form-group">
             <input type="email" placeholder="Your Email" required name="user_email">
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Subject" required name="subject">
           </div>
           <div class="form-group">
             <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
