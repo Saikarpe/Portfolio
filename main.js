@@ -332,4 +332,24 @@ window.addEventListener('resize', function() {
   initMobileNav();
 });
 });
-/* ====== END: CHATBOT JAVASCRIPT ====== */ 
+/* ====== END: CHATBOT JAVASCRIPT ====== */
+
+// Contact Form Handling with EmailJS
+(function() {
+    // Initialize EmailJS with your public key
+    emailjs.init('WgEnSGl1i-rW7p16X'); // Replace with your actual public key
+
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Send the form data via EmailJS
+        emailjs.sendForm('service_j531c51', 'template_1wmvkqf', this, 'WgEnSGl1i-rW7p16X') // Replace with your service ID and template ID
+            .then(function() {
+                alert('Message sent successfully!');
+                document.getElementById('contact-form').reset(); // Clear the form
+            }, function(error) {
+                alert('Failed to send message. Please try again.');
+                console.error('EmailJS error:', error);
+            });
+    });
+})(); 
