@@ -52,7 +52,7 @@ backToTop.style.cssText = `
   position: fixed;
   bottom: 40px;
   right: 40px;
-  background: #474af0;
+  background: linear-gradient(135deg, #00e5ff, #3d8bff);
   color: white;
   width: 50px;
   height: 50px;
@@ -62,26 +62,73 @@ backToTop.style.cssText = `
   justify-content: center;
   cursor: pointer;
   z-index: 1000;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+  font-size: 16px;
 `;
 
 backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-backToTop.addEventListener('mouseover', () => backToTop.style.transform = 'scale(1.2)');
-backToTop.addEventListener('mouseout', () => backToTop.style.transform = 'scale(1)');
-
-// CARD HOVER EFFECT
-const cards = document.querySelectorAll('.project-card, .c1, .service-card');
-cards.forEach(card => {
-  card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-8px) scale(1.05)');
-  card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
+backToTop.addEventListener('mouseover', () => {
+  backToTop.style.transform = 'scale(1.15)';
+  backToTop.style.boxShadow = '0 6px 30px rgba(0, 229, 255, 0.5)';
 });
+backToTop.addEventListener('mouseout', () => {
+  backToTop.style.transform = 'scale(1)';
+  backToTop.style.boxShadow = '0 4px 20px rgba(0, 229, 255, 0.3)';
+});
+
+// 3D TILT CARD EFFECT
+function initTiltCards() {
+  const tiltTargets = document.querySelectorAll('.project-card, .c1, .contact-info, .contact-form');
+  
+  tiltTargets.forEach(card => {
+    card.classList.add('tilt-card');
+    card.style.position = 'relative';
+    
+    // Add shine overlay
+    const shine = document.createElement('div');
+    shine.classList.add('tilt-shine');
+    card.appendChild(shine);
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -8;
+      const rotateY = ((x - centerX) / centerX) * 8;
+      
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+      
+      // Move shine based on mouse
+      const shineX = (x / rect.width) * 100;
+      const shineY = (y / rect.height) * 100;
+      shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(0,229,255,0.08) 0%, transparent 60%)`;
+      shine.style.opacity = '1';
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
+      card.style.transition = 'transform 0.5s ease';
+      shine.style.opacity = '0';
+    });
+
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.1s ease';
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initTiltCards);
 
 // TYPING ANIMATION
 const typingElement = document.querySelector('.info-home h3');
-const words = ["Frontend Developer", "AIML Enthusiast", "Python Enthusiast", "Data Analyst"];
+const words = ["Continuous Learner", "AIML Enthusiast", "Full-Stack Developer", "Data Analyst"];
 let wordIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
@@ -136,14 +183,15 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     loadingScreen.style.opacity = "0";
     setTimeout(() => loadingScreen.style.display = "none", 500);
-    mainPage.classList.add("visible");
+    if (mainPage) mainPage.classList.add("visible");
   }, 4000);
 });
+
 /* ====== START: CHATBOT JAVASCRIPT ====== */
 
 // Wait for the DOM to be fully loaded before running chat logic
 document.addEventListener("DOMContentLoaded", () => {
-  
+
   // --- 1. Select all our chat elements ---
   const chatToggler = document.getElementById("chat-toggler");
   const chatWidget = document.getElementById("chat-widget");
@@ -152,19 +200,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chat-input");
   const chatSendBtn = document.getElementById("chat-send-btn");
 
-  // --- 2. Define the bot's "brain" (This is where you customize answers) ---
+  // --- 2. Define the bot's "brain" ---
   const qaDatabase = {
     "hello": "Hi there! What can I tell you about Sai?",
     "hi": "Hi there! What can I tell you about Sai?",
-    "projects": "Sai has worked on several projects, including a 'BIOT Arm', a 'JARVIS-An AI voice Assistant', and a 'Mart Management System'. Which one would you like to know about?",
-    "skills": "Sai's skills include HTML, CSS, JavaScript, Java, C, SQL, and Python.",
-    "languages": "Sai's skills include HTML, CSS, JavaScript, Java, C, SQL, and Python.",
+    "projects": "Sai has worked on several projects, including 'JARVIS AI Assistant', 'E-Commerce Churn Predictor', 'BIOT Arm', 'CampusConnect', 'Object Detection', and more. Which one would you like to know about?",
+    "skills": "Sai's skills include HTML, CSS, JavaScript, Java, C, SQL, Python, Machine Learning, and Computer Vision.",
+    "languages": "Sai's skills include HTML, CSS, JavaScript, Java, C, SQL, Python, Machine Learning, and Computer Vision.",
     "education": "Sai is currently pursuing Electronics and Computer Engineering.",
     "contact": "You can contact Sai at karpesai0000@gmail.com or find him on LinkedIn. The links are on the 'Home' section of this page!",
     "about": "Sai is a passionate and curious engineer who loves creating intelligent, human-centered systems. Ask about 'skills' or 'projects' to learn more.",
     "biot": "The BIOT Arm is a Bionic and IoT combination project. You can see more on Sai's LinkedIn!",
     "jarvis": "JARVIS is an AI voice assistant built with Python. You can find it on Sai's GitHub.",
     "mart": "That's a Mart Management System using DBMS (SQL). The GitHub link is in the 'Projects' section.",
+    "campusconnect": "CampusConnect is a college event management platform with interactive maps and RSVP system, built with PHP, MySQL, and Leaflet.js.",
+    "churn": "The E-Commerce Churn Predictor uses ML with PCA, scaling, and serialized model pipelines to predict customer behavior.",
     "bye": "Goodbye! Have a great day.",
     "default": "I'm not sure I understand. Try asking about 'projects', 'skills', 'education', or 'contact'."
   };
@@ -173,12 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function getBotResponse(userInput) {
     let query = userInput.toLowerCase().trim();
 
-    // Direct match
-    if (qaDatabase[query]) {
-      return qaDatabase[query];
-    }
+    if (qaDatabase[query]) return qaDatabase[query];
 
-    // Keyword matching
     if (query.includes("project")) return qaDatabase["projects"];
     if (query.includes("skill") || query.includes("language")) return qaDatabase["skills"];
     if (query.includes("contact") || query.includes("email") || query.includes("phone")) return qaDatabase["contact"];
@@ -186,54 +232,39 @@ document.addEventListener("DOMContentLoaded", () => {
     if (query.includes("biot")) return qaDatabase["biot"];
     if (query.includes("jarvis")) return qaDatabase["jarvis"];
     if (query.includes("mart") || query.includes("dbms")) return qaDatabase["mart"];
+    if (query.includes("campus")) return qaDatabase["campusconnect"];
+    if (query.includes("churn") || query.includes("ecommerce") || query.includes("predict")) return qaDatabase["churn"];
     if (query.includes("bye") || query.includes("thanks")) return qaDatabase["bye"];
 
-    // Default fallback
     return qaDatabase["default"];
   }
 
   // --- 4. Function to add a message to the chat window ---
-  // 'sender' will be either 'user' or 'bot'
   function addMessage(message, sender) {
-    // Create a new message div
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-message", sender);
-    
-    // Create the paragraph and add the text
     const messageP = document.createElement("p");
     messageP.textContent = message;
-    
-    // Add the paragraph to the div
     messageDiv.appendChild(messageP);
-    
-    // Add the new message div to the chat window
     chatMessages.appendChild(messageDiv);
-    
-    // Auto-scroll to the bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
   // --- 5. Function to handle sending a message ---
   function handleSendMessage() {
     const userMessage = chatInput.value;
-    if (userMessage.trim() === "") return; // Don't send empty messages
+    if (userMessage.trim() === "") return;
 
-    // 1. Display the user's message
     addMessage(userMessage, "user");
-    
-    // 2. Clear the input field
     chatInput.value = "";
 
-    // 3. Get and display the bot's response
     setTimeout(() => {
       const botMessage = getBotResponse(userMessage);
       addMessage(botMessage, "bot");
-    }, 500); // Add a small delay for realism
+    }, 500);
   }
 
   // --- 6. Event Listeners ---
-  
-  // Show/Hide the chat widget
   chatToggler.addEventListener("click", () => {
     chatWidget.classList.toggle("show");
   });
@@ -242,114 +273,92 @@ document.addEventListener("DOMContentLoaded", () => {
     chatWidget.classList.remove("show");
   });
 
-  // Send message on button click
   chatSendBtn.addEventListener("click", handleSendMessage);
 
-  // Send message on "Enter" key press
   chatInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       handleSendMessage();
     }
   });
-  // ====== MOBILE NAVBAR ENHANCEMENTS ======
 
-// Mobile scroll effect
-function handleMobileScroll() {
-  const header = document.querySelector('.header-list');
-  const scrollY = window.scrollY;
-  
-  if (window.innerWidth <= 768) {
-    if (scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+  // ====== MOBILE NAVBAR ENHANCEMENTS ======
+  function handleMobileScroll() {
+    const header = document.querySelector('.header-list');
+    const scrollY = window.scrollY;
+
+    if (window.innerWidth <= 768) {
+      if (scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     }
   }
-}
 
-// Touch feedback for mobile nav items
-function addMobileTouchFeedback() {
-  if (window.innerWidth <= 768) {
-    const navItems = document.querySelectorAll('.ul-list li');
-    
-    navItems.forEach(item => {
-      // Touch start effect
-      item.addEventListener('touchstart', function() {
-        if (!this.classList.contains('active')) {
-          this.style.transform = 'scale(0.95)';
-        }
-      });
-      
-      // Touch end effect
-      item.addEventListener('touchend', function() {
-        this.style.transform = '';
-      });
-    });
-  }
-}
-
-// Initialize mobile enhancements
-function initMobileNav() {
-  if (window.innerWidth <= 768) {
-    handleMobileScroll();
-    addMobileTouchFeedback();
-    
-    // Update active section with mobile offset
-    const navLinks = document.querySelectorAll('.ul-list li a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetId);
-
-        // Mobile-specific scroll offset
-        const mobileOffset = 80;
-        
-        window.scrollTo({
-          top: targetSection.offsetTop - mobileOffset,
-          behavior: 'smooth'
+  function addMobileTouchFeedback() {
+    if (window.innerWidth <= 768) {
+      const navItems = document.querySelectorAll('.ul-list li');
+      navItems.forEach(item => {
+        item.addEventListener('touchstart', function () {
+          if (!this.classList.contains('active')) {
+            this.style.transform = 'scale(0.95)';
+          }
         });
-
-        removeActive();
-        link.parentElement.classList.add('active');
+        item.addEventListener('touchend', function () {
+          this.style.transform = '';
+        });
       });
-    });
+    }
   }
-}
 
-// Update scroll handler for mobile
-window.addEventListener('scroll', function() {
-  handleMobileScroll();
-});
+  function initMobileNav() {
+    if (window.innerWidth <= 768) {
+      handleMobileScroll();
+      addMobileTouchFeedback();
+    }
+  }
 
-// Initialize on load and resize
-document.addEventListener('DOMContentLoaded', function() {
+  window.addEventListener('scroll', handleMobileScroll);
   initMobileNav();
-});
-
-// Re-initialize on resize
-window.addEventListener('resize', function() {
-  initMobileNav();
-});
+  window.addEventListener('resize', initMobileNav);
 });
 /* ====== END: CHATBOT JAVASCRIPT ====== */
 
 // Contact Form Handling with EmailJS
-(function() {
-    // Initialize EmailJS with your public key
-    emailjs.init('WgEnSGl1i-rW7p16X'); // Replace with your actual public key
+(function () {
+  emailjs.init('WgEnSGl1i-rW7p16X');
 
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+  document.getElementById('contact-form').addEventListener('submit', function (event) {
+    event.preventDefault();
 
-        // Send the form data via EmailJS
-        emailjs.sendForm('service_j531c51', 'template_1wmvkqf', this, 'WgEnSGl1i-rW7p16X') // Replace with your service ID and template ID
-            .then(function() {
-                alert('Message sent successfully!');
-                document.getElementById('contact-form').reset(); // Clear the form
-            }, function(error) {
-                alert('Failed to send message. Please try again.');
-                console.error('EmailJS error:', error);
-            });
+    emailjs.sendForm('service_j531c51', 'template_1wmvkqf', this, 'WgEnSGl1i-rW7p16X')
+      .then(function () {
+        alert('Message sent successfully!');
+        document.getElementById('contact-form').reset();
+      }, function (error) {
+        alert('Failed to send message. Please try again.');
+        console.error('EmailJS error:', error);
+      });
+  });
+})();
+
+// ====== SCROLL ANIMATION OBSERVER ======
+document.addEventListener('DOMContentLoaded', () => {
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
     });
-})(); 
+  }, observerOptions);
+
+  const animElements = document.querySelectorAll('.animate-hidden');
+  animElements.forEach(el => observer.observe(el));
+});
