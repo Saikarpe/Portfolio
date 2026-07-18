@@ -20,6 +20,13 @@
 </head>
 
 <body>
+  <!-- Custom Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+
   <!-- Loading Screen -->
   <div id="loading-screen">
     <div class="loading-content">
@@ -33,6 +40,9 @@
       <h2 id="designer-text" class="hidden">Designed by Sai</h2>
     </div>
   </div>
+
+  <!-- Interactive Particle Background -->
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
   <!-- Animated Background Orbs -->
   <div class="bg-orbs" aria-hidden="true">
@@ -58,6 +68,14 @@
             <a href="#about">About</a>
           </li>
           <li>
+            <i class="fa-solid fa-layer-group"></i>
+            <a href="#skills">Skills</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-certificate"></i>
+            <a href="#certifications">Certs</a>
+          </li>
+          <li>
             <i class="fa-regular fa-folder-open"></i>
             <a href="#project">Projects</a>
           </li>
@@ -75,7 +93,7 @@
         <div class="home-section animate-hidden">
           <div class="info-home">
             <p class="greeting-tag"><i class="fa-solid fa-hand-sparkles"></i> Welcome to my portfolio</p>
-            <h1>Hi, I'm <span class="gradient-text">Sai</span></h1>
+            <h1>Hi, I'm <span class="gradient-text animated-gradient">Sai</span></h1>
             <h3>Continuous Learner</h3>
             <div class="info-p">
               <p>I'm Sai, a passionate learner driven by the excitement of solving real-world problems. I love
@@ -90,7 +108,7 @@
               <a href="#contact" class="btn-home1">
                 <i class="fa-solid fa-arrow-right"></i> Discuss with Me!!
               </a>
-              <a href="https://drive.google.com/file/d/1B_9xT01iwL3g1yd6WaqMKD_KhxOV8D8G/view?usp=sharing"
+              <a href="https://drive.google.com/file/d/1DQiYS30ugSi4MyP_iZ-YYQgEHwF_Bybl/view?usp=sharing"
                 class="btn-home2" download>
                 <i class="fa-solid fa-download"></i> Download CV
               </a>
@@ -168,6 +186,259 @@
       </div>
     </section>
 
+    <!-- Stats Counter Section -->
+    <section class="stats-section" id="stats">
+      <div class="stats-container">
+        <div class="stat-item animate-hidden delay-100">
+          <div class="stat-icon"><i class="fa-solid fa-folder-open"></i></div>
+          <h2 class="stat-number" data-target="8">0</h2>
+          <p>Projects Built</p>
+        </div>
+        <div class="stat-item animate-hidden delay-200">
+          <div class="stat-icon"><i class="fa-solid fa-certificate"></i></div>
+          <h2 class="stat-number" data-target="15">0</h2>
+          <p>Certifications</p>
+        </div>
+        <div class="stat-item animate-hidden delay-300">
+          <div class="stat-icon"><i class="fa-solid fa-code"></i></div>
+          <h2 class="stat-number" data-target="12">0</h2>
+          <p>Technologies</p>
+        </div>
+        <div class="stat-item animate-hidden delay-400">
+          <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+          <h2 class="stat-number" data-target="8" data-decimal=".2">0</h2>
+          <p>CGPA</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section" id="skills">
+      <p class="section-label animate-hidden">SKILLS & TOOLS</p>
+      <div class="title animate-hidden delay-100">
+        <h1>My Technical</h1>
+        <h1>Arsenal</h1>
+      </div>
+      <div class="hrrr animate-hidden delay-200">
+        <hr>
+      </div>
+
+      <!-- Skills Progress Bars -->
+      <div class="skills-grid animate-hidden delay-300">
+        <div class="skills-category">
+          <h3><i class="fa-solid fa-brain"></i> AI / ML & Data Science</h3>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Python</span><span>88%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Machine Learning</span><span>80%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Data Science</span><span>75%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>DSA (Java)</span><span>72%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="72"></div></div>
+          </div>
+        </div>
+        <div class="skills-category">
+          <h3><i class="fa-solid fa-code"></i> Frontend</h3>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>HTML</span><span>92%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="92"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>CSS</span><span>88%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>JavaScript</span><span>78%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="78"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Angular</span><span>65%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="65"></div></div>
+          </div>
+        </div>
+        <div class="skills-category">
+          <h3><i class="fa-solid fa-server"></i> Backend & Databases</h3>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>PHP</span><span>70%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="70"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>SQL / MySQL</span><span>78%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="78"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Git & GitHub</span><span>82%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="82"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech Stack Icons -->
+      <div class="tech-stack-wrapper animate-hidden delay-400">
+        <h2>Tech Stack</h2>
+        <div class="tech-stack-grid">
+          <div class="tech-item"><i class="fa-brands fa-python"></i><span>Python</span></div>
+          <div class="tech-item"><i class="fa-brands fa-html5"></i><span>HTML5</span></div>
+          <div class="tech-item"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div>
+          <div class="tech-item"><i class="fa-brands fa-js"></i><span>JavaScript</span></div>
+          <div class="tech-item"><i class="fa-brands fa-java"></i><span>Java</span></div>
+          <div class="tech-item"><i class="fa-brands fa-php"></i><span>PHP</span></div>
+          <div class="tech-item"><i class="fa-brands fa-angular"></i><span>Angular</span></div>
+          <div class="tech-item"><i class="fa-brands fa-git-alt"></i><span>Git</span></div>
+          <div class="tech-item"><i class="fa-brands fa-github"></i><span>GitHub</span></div>
+          <div class="tech-item"><i class="fa-solid fa-database"></i><span>MySQL</span></div>
+          <div class="tech-item"><i class="fa-solid fa-robot"></i><span>AI / ML</span></div>
+          <div class="tech-item"><i class="fa-solid fa-chart-line"></i><span>Data Science</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education Timeline Section -->
+    <section class="education-section" id="education">
+      <p class="section-label animate-hidden">EDUCATION</p>
+      <div class="title animate-hidden delay-100">
+        <h1>Academic</h1>
+        <h1>Journey</h1>
+      </div>
+      <div class="hrrr animate-hidden delay-200">
+        <hr>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item animate-hidden delay-100">
+          <div class="timeline-dot"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="timeline-content">
+            <span class="timeline-badge">Currently Pursuing</span>
+            <h3>B.Tech — Electronics & Computer Engineering</h3>
+            <p class="timeline-institution"><i class="fa-solid fa-building-columns"></i> Sanjivani College of Engineering, Kopargaon</p>
+            <p class="timeline-year"><i class="fa-regular fa-calendar"></i> 2022 — Present</p>
+            <p class="timeline-score"><i class="fa-solid fa-star"></i> CGPA: 8.2</p>
+          </div>
+        </div>
+        <div class="timeline-item animate-hidden delay-200">
+          <div class="timeline-dot"><i class="fa-solid fa-school"></i></div>
+          <div class="timeline-content">
+            <h3>HSC — 12th Standard</h3>
+            <p class="timeline-institution"><i class="fa-solid fa-building-columns"></i> Shree Ganesh Junior College, Korhale</p>
+            <p class="timeline-year"><i class="fa-regular fa-calendar"></i> 2022</p>
+            <p class="timeline-score"><i class="fa-solid fa-star"></i> Percentage: 78%</p>
+          </div>
+        </div>
+        <div class="timeline-item animate-hidden delay-300">
+          <div class="timeline-dot"><i class="fa-solid fa-school-flag"></i></div>
+          <div class="timeline-content">
+            <h3>SSC — 10th Standard</h3>
+            <p class="timeline-institution"><i class="fa-solid fa-building-columns"></i> Shree Ganesh International School, Korhale</p>
+            <p class="timeline-year"><i class="fa-regular fa-calendar"></i> 2020</p>
+            <p class="timeline-score"><i class="fa-solid fa-star"></i> Percentage: 89.60%</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications & Patent Section -->
+    <section class="certifications-section" id="certifications">
+      <p class="section-label animate-hidden">CERTIFICATIONS & PATENT</p>
+      <div class="title animate-hidden delay-100">
+        <h1>Achievements &</h1>
+        <h1>Recognitions</h1>
+      </div>
+      <div class="hrrr animate-hidden delay-200">
+        <hr>
+      </div>
+      <div class="info-pro animate-hidden delay-300">
+        <p>A collection of certifications and accomplishments validating my expertise.</p>
+        <p>Click on any certificate to view in full size.</p>
+      </div>
+
+      <!-- Patent Card -->
+      <div class="patent-highlight animate-hidden delay-300">
+        <div class="patent-card" onclick="openLightbox('Patent.jpg')">
+          <div class="patent-badge"><i class="fa-solid fa-award"></i> Patent</div>
+          <img src="Patent.jpg" alt="Patent" loading="lazy">
+          <div class="patent-overlay">
+            <i class="fa-solid fa-expand"></i>
+            <span>View Patent</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certificates Carousel -->
+      <div class="cert-carousel-wrapper">
+        <button class="cert-nav cert-prev" id="cert-prev"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="cert-carousel" id="cert-carousel">
+          <div class="cert-slide" onclick="openLightbox('cert1.jpg')">
+            <img src="cert1.jpg" alt="Certificate 1" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert2.jpg')">
+            <img src="cert2.jpg" alt="Certificate 2" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert3.png')">
+            <img src="cert3.png" alt="Certificate 3" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert4.jpg')">
+            <img src="cert4.jpg" alt="Certificate 4" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert5.jpg')">
+            <img src="cert5.jpg" alt="Certificate 5" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert6.jpg')">
+            <img src="cert6.jpg" alt="Certificate 6" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert7.jpg')">
+            <img src="cert7.jpg" alt="Certificate 7" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert8.jpg')">
+            <img src="cert8.jpg" alt="Certificate 8" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert9.png')">
+            <img src="cert9.png" alt="Certificate 9" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert10.jpg')">
+            <img src="cert10.jpg" alt="Certificate 10" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert11.jpg')">
+            <img src="cert11.jpg" alt="Certificate 11" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert12.jpg')">
+            <img src="cert12.jpg" alt="Certificate 12" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert13.jpg')">
+            <img src="cert13.jpg" alt="Certificate 13" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert14.png')">
+            <img src="cert14.png" alt="Certificate 14" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+          <div class="cert-slide" onclick="openLightbox('cert15.jpg')">
+            <img src="cert15.jpg" alt="Certificate 15" loading="lazy">
+            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
+          </div>
+        </div>
+        <button class="cert-nav cert-next" id="cert-next"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="cert-counter" id="cert-counter">1 / 15</div>
+    </section>
+
     <!-- Projects Section -->
     <section class="project" id="project">
       <p class="section-label animate-hidden">PROJECTS</p>
@@ -239,8 +510,8 @@
             <a href="#">Leaflet.js</a>
           </div>
           <div class="btns">
-            <a href="https://github.com/Saikarpe/College_Event_Manager" class="btn" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://www.linkedin.com/posts/sai-karpe-401772290_webdevelopment-fullstack-javascript-ugcPost-7464312344601604096-KJfe/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEaXmsEBLSxNmNUjEwCFBJMxHefm1VMrvsY" class="btn" target="_blank"><i
+            <a href="https://github.com/Saikarpe" class="btn" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://www.linkedin.com/in/sai-karpe-401772290/" class="btn" target="_blank"><i
                 class="fas fa-external-link-alt"></i> Live Demo</a>
           </div>
         </div>
@@ -379,6 +650,8 @@
         <ul class="footer-links">
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#certifications">Certifications</a></li>
           <li><a href="#project">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -396,6 +669,12 @@
 
   </div>
   <!-- End Main Page -->
+
+  <!-- Lightbox Overlay -->
+  <div id="lightbox-overlay" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightbox-img" src="" alt="Certificate Full View">
+  </div>
 
   <!-- Chat Widget -->
   <div id="chat-toggler">

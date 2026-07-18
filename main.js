@@ -205,18 +205,22 @@ document.addEventListener("DOMContentLoaded", () => {
     "hello": "Hi there! What can I tell you about Sai?",
     "hi": "Hi there! What can I tell you about Sai?",
     "projects": "Sai has worked on several projects, including 'JARVIS AI Assistant', 'E-Commerce Churn Predictor', 'BIOT Arm', 'CampusConnect', 'Object Detection', and more. Which one would you like to know about?",
-    "skills": "Sai's skills include HTML, CSS, JavaScript, Java, C, SQL, Python, Machine Learning, and Computer Vision.",
-    "languages": "Sai's skills include HTML, CSS, JavaScript, Java, C, SQL, Python, Machine Learning, and Computer Vision.",
-    "education": "Sai is currently pursuing Electronics and Computer Engineering.",
+    "skills": "Sai's skills include Python, HTML, CSS, JavaScript, Java, PHP, Angular, SQL, Git & GitHub, Machine Learning, Data Science, and DSA. Check out the Skills section for visual proficiency levels!",
+    "languages": "Sai's skills include Python, HTML, CSS, JavaScript, Java, PHP, Angular, SQL, Git & GitHub, Machine Learning, Data Science, and DSA.",
+    "education": "Sai is pursuing B.Tech in Electronics & Computer Engineering at Sanjivani College of Engineering, Kopargaon (CGPA: 8.2). He completed 12th from Shree Ganesh Junior College (78%) and 10th from Shree Ganesh International School (89.60%).",
     "contact": "You can contact Sai at karpesai0000@gmail.com or find him on LinkedIn. The links are on the 'Home' section of this page!",
     "about": "Sai is a passionate and curious engineer who loves creating intelligent, human-centered systems. Ask about 'skills' or 'projects' to learn more.",
+    "certifications": "Sai has 15+ certifications and a patent! Scroll down to the Certifications & Patent section to view them all. Click any certificate to see it in full size.",
+    "patent": "Yes! Sai has a published patent. You can view it in the Certifications & Patent section of this portfolio.",
+    "certificates": "Sai has 15+ certifications across AI, ML, and various tech domains. Check out the Certifications section to see them all!",
+    "tech": "Sai's tech stack includes Python, HTML5, CSS3, JavaScript, Java, PHP, Angular, Git, GitHub, MySQL, AI/ML, and Data Science.",
     "biot": "The BIOT Arm is a Bionic and IoT combination project. You can see more on Sai's LinkedIn!",
     "jarvis": "JARVIS is an AI voice assistant built with Python. You can find it on Sai's GitHub.",
     "mart": "That's a Mart Management System using DBMS (SQL). The GitHub link is in the 'Projects' section.",
     "campusconnect": "CampusConnect is a college event management platform with interactive maps and RSVP system, built with PHP, MySQL, and Leaflet.js.",
     "churn": "The E-Commerce Churn Predictor uses ML with PCA, scaling, and serialized model pipelines to predict customer behavior.",
     "bye": "Goodbye! Have a great day.",
-    "default": "I'm not sure I understand. Try asking about 'projects', 'skills', 'education', or 'contact'."
+    "default": "I'm not sure I understand. Try asking about 'projects', 'skills', 'education', 'certifications', or 'contact'."
   };
 
   // --- 3. The function that finds an answer ---
@@ -229,6 +233,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (query.includes("skill") || query.includes("language")) return qaDatabase["skills"];
     if (query.includes("contact") || query.includes("email") || query.includes("phone")) return qaDatabase["contact"];
     if (query.includes("about") || query.includes("who is")) return qaDatabase["about"];
+    if (query.includes("cert") || query.includes("award") || query.includes("achievement")) return qaDatabase["certifications"];
+    if (query.includes("patent")) return qaDatabase["patent"];
+    if (query.includes("tech") || query.includes("stack") || query.includes("tool")) return qaDatabase["tech"];
+    if (query.includes("educat") || query.includes("college") || query.includes("school") || query.includes("degree")) return qaDatabase["education"];
     if (query.includes("biot")) return qaDatabase["biot"];
     if (query.includes("jarvis")) return qaDatabase["jarvis"];
     if (query.includes("mart") || query.includes("dbms")) return qaDatabase["mart"];
@@ -354,6 +362,16 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('in-view');
+
+        // Animate skill bars when their parent comes into view
+        const skillBars = entry.target.querySelectorAll('.skill-bar-fill');
+        skillBars.forEach(bar => {
+          const targetWidth = bar.getAttribute('data-width');
+          setTimeout(() => {
+            bar.style.width = targetWidth + '%';
+          }, 300);
+        });
+
         observer.unobserve(entry.target);
       }
     });
@@ -361,4 +379,368 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const animElements = document.querySelectorAll('.animate-hidden');
   animElements.forEach(el => observer.observe(el));
+});
+// ====== LIGHTBOX FOR CERTIFICATES ======
+function openLightbox(src) {
+  const overlay = document.getElementById('lightbox-overlay');
+  const img = document.getElementById('lightbox-img');
+  img.src = src;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  const overlay = document.getElementById('lightbox-overlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close lightbox with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ====== CERTIFICATE CAROUSEL ======
+document.addEventListener('DOMContentLoaded', () => {
+  const slides = document.querySelectorAll('.cert-slide');
+  const prevBtn = document.getElementById('cert-prev');
+  const nextBtn = document.getElementById('cert-next');
+  const counter = document.getElementById('cert-counter');
+  let currentSlide = 0;
+  let autoPlayInterval;
+  let isAnimating = false;
+
+  function showSlide(index, direction) {
+    if (isAnimating || index === currentSlide) return;
+    isAnimating = true;
+
+    const outgoing = slides[currentSlide];
+    const incoming = slides[index];
+
+    // Slide out the current one
+    outgoing.classList.remove('active');
+    outgoing.classList.add(direction === 'next' ? 'slide-out-left' : 'slide-out-right');
+
+    // Prepare incoming from the opposite side
+    incoming.style.transition = 'none';
+    incoming.style.transform = direction === 'next' ? 'translateX(40px)' : 'translateX(-40px)';
+    incoming.style.opacity = '0';
+
+    // Force reflow then animate in
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        incoming.style.transition = 'opacity .7s ease, transform .7s ease';
+        incoming.classList.add('active');
+        incoming.style.transform = '';
+        incoming.style.opacity = '';
+      });
+    });
+
+    currentSlide = index;
+    counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+
+    // Cleanup after transition
+    setTimeout(() => {
+      outgoing.classList.remove('slide-out-left', 'slide-out-right');
+      isAnimating = false;
+    }, 750);
+  }
+
+  function nextSlide() {
+    const next = (currentSlide + 1) % slides.length;
+    showSlide(next, 'next');
+  }
+
+  function prevSlide() {
+    const prev = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(prev, 'prev');
+  }
+
+  // Initialize first slide
+  slides[0].classList.add('active');
+  counter.textContent = `1 / ${slides.length}`;
+
+  // Button events
+  nextBtn.addEventListener('click', () => {
+    nextSlide();
+    resetAutoPlay();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prevSlide();
+    resetAutoPlay();
+  });
+
+  // Keyboard navigation (arrows)
+  document.addEventListener('keydown', (e) => {
+    if (document.getElementById('lightbox-overlay').classList.contains('active')) return;
+    if (e.key === 'ArrowRight') { nextSlide(); resetAutoPlay(); }
+    if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
+  });
+
+  // Auto-play (6 seconds)
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(nextSlide, 6000);
+  }
+
+  function resetAutoPlay() {
+    clearInterval(autoPlayInterval);
+    startAutoPlay();
+  }
+
+  startAutoPlay();
+
+  // Pause auto-play on hover
+  const carouselWrapper = document.querySelector('.cert-carousel-wrapper');
+  if (carouselWrapper) {
+    carouselWrapper.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+    carouselWrapper.addEventListener('mouseleave', () => startAutoPlay());
+  }
+});
+
+// ====== CUSTOM CURSOR + PHYSICS TRAIL ======
+(function() {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    // Position dot immediately
+    dot.style.left = mouseX + 'px';
+    dot.style.top = mouseY + 'px';
+  });
+
+  // Smooth ring following using animation loop
+  function animateRing() {
+    // Spring physics / easing
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Hover state detection for buttons/links
+  const interactives = document.querySelectorAll('a, button, .btn, .btn-home1, .btn-home2, .btn-send, .social-link, .cert-slide, .patent-card, .c1, .project-card, #chat-toggler, #chat-close-btn, #chat-send-btn, .lightbox-close, .cert-nav');
+  interactives.forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
+  });
+})();
+
+// ====== SCROLL PROGRESS BAR ======
+window.addEventListener('scroll', () => {
+  const scrollProgress = document.getElementById('scroll-progress');
+  if (!scrollProgress) return;
+  const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+  if (totalHeight > 0) {
+    const progress = (window.pageYOffset / totalHeight) * 100;
+    scrollProgress.style.width = progress + '%';
+  }
+});
+
+// ====== INTERACTIVE PARTICLE BACKGROUND ======
+(function() {
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let particles = [];
+  let mouse = { x: null, y: null, radius: 100 };
+
+  // Track mouse coordinates relative to viewport
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+  window.addEventListener('mouseleave', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initParticles();
+  }
+
+  class Particle {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.size = Math.random() * 2 + 1;
+      this.baseX = this.x;
+      this.baseY = this.y;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = (Math.random() - 0.5) * 0.4;
+      this.density = (Math.random() * 30) + 1;
+    }
+
+    draw() {
+      ctx.fillStyle = 'rgba(0, 229, 255, 0.45)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    update() {
+      // Float naturally
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      // Bounce off screen boundaries
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+      // Mouse interactive push effect
+      if (mouse.x !== null && mouse.y !== null) {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.hypot(dx, dy);
+        
+        if (distance < mouse.radius) {
+          let force = (mouse.radius - distance) / mouse.radius;
+          let directionX = dx / distance;
+          let directionY = dy / distance;
+          // Push away
+          this.x -= directionX * force * 5;
+          this.y -= directionY * force * 5;
+        }
+      }
+    }
+  }
+
+  function initParticles() {
+    particles = [];
+    const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 25000));
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      particles.push(new Particle(x, y));
+    }
+  }
+
+  function connectParticles() {
+    for (let a = 0; a < particles.length; a++) {
+      for (let b = a + 1; b < particles.length; b++) {
+        let dx = particles[a].x - particles[b].x;
+        let dy = particles[a].y - particles[b].y;
+        let distance = Math.hypot(dx, dy);
+        
+        if (distance < 120) {
+          let opacity = (1 - (distance / 120)) * 0.15;
+          ctx.strokeStyle = `rgba(0, 229, 255, ${opacity})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    connectParticles();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  animate();
+})();
+
+// ====== ANIMATED STATS COUNTER ======
+document.addEventListener('DOMContentLoaded', () => {
+  const statsSection = document.getElementById('stats');
+  if (!statsSection) return;
+
+  const statNumbers = document.querySelectorAll('.stat-number');
+  let started = false;
+
+  const countUp = () => {
+    statNumbers.forEach(num => {
+      const target = parseFloat(num.getAttribute('data-target'));
+      const decimal = num.getAttribute('data-decimal') || '';
+      let current = 0;
+      const duration = 2000; // 2 seconds
+      const increment = target / (duration / 16); // ~60fps
+
+      const updateCounter = () => {
+        current += increment;
+        if (current < target) {
+          if (decimal) {
+            num.textContent = current.toFixed(1) + (target === 8 ? ' CGPA' : '');
+          } else {
+            num.textContent = Math.floor(current) + '+';
+          }
+          requestAnimationFrame(updateCounter);
+        } else {
+          if (decimal) {
+            num.textContent = target.toFixed(1) + (target === 8 ? ' CGPA' : '');
+          } else {
+            num.textContent = target + '+';
+          }
+        }
+      };
+      updateCounter();
+    });
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        setTimeout(countUp, 200);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(statsSection);
+});
+
+// ====== MAGNETIC HOVER BUTTONS ======
+(function() {
+  const magnetics = document.querySelectorAll('.btn-home1, .btn-home2, .btn-send, .social-link');
+  magnetics.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - (rect.width / 2);
+      const y = e.clientY - rect.top - (rect.height / 2);
+      
+      // Pull element toward cursor by 30% of distance
+      btn.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px) scale(1.05)`;
+      btn.style.transition = 'transform 0.1s ease-out';
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+      btn.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    });
+  });
+})();
+
+// ====== PARALLAX SCROLL EFFECT ON ORBS ======
+window.addEventListener('scroll', () => {
+  const orbs = document.querySelectorAll('.orb');
+  const scrollY = window.pageYOffset;
+  orbs.forEach((orb, index) => {
+    const speed = (index + 1) * 0.08;
+    orb.style.transform = `translateY(${scrollY * speed}px)`;
+  });
 });
