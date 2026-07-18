@@ -675,8 +675,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const countUp = () => {
     statNumbers.forEach(num => {
-      const target = parseFloat(num.getAttribute('data-target'));
-      const decimal = num.getAttribute('data-decimal') || '';
+      const targetStr = num.getAttribute('data-target');
+      const suffix = num.getAttribute('data-suffix') || '';
+      const target = parseFloat(targetStr);
+      const hasDecimal = targetStr.includes('.');
+      
       let current = 0;
       const duration = 2000; // 2 seconds
       const increment = target / (duration / 16); // ~60fps
@@ -684,18 +687,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const updateCounter = () => {
         current += increment;
         if (current < target) {
-          if (decimal) {
-            num.textContent = current.toFixed(1) + (target === 8 ? ' CGPA' : '');
-          } else {
-            num.textContent = Math.floor(current) + '+';
-          }
+          num.textContent = (hasDecimal ? current.toFixed(1) : Math.floor(current)) + suffix;
           requestAnimationFrame(updateCounter);
         } else {
-          if (decimal) {
-            num.textContent = target.toFixed(1) + (target === 8 ? ' CGPA' : '');
-          } else {
-            num.textContent = target + '+';
-          }
+          num.textContent = (hasDecimal ? target.toFixed(1) : target) + suffix;
         }
       };
       updateCounter();
