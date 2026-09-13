@@ -53,7 +53,7 @@ backToTop.style.cssText = `
   bottom: 40px;
   right: 40px;
   background: var(--gradient);
-  color: white;
+  color: var(--on-accent);
   width: 50px;
   height: 50px;
   border-radius: 50%;
