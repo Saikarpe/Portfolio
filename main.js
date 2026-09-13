@@ -334,18 +334,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Contact Form Handling with EmailJS
 (function () {
-  emailjs.init('WgEnSGl1i-rW7p16X');
+  const form = document.getElementById('contact-form');
+  if (!form) return;
 
-  document.getElementById('contact-form').addEventListener('submit', function (event) {
+  const btn = document.getElementById('form-submit');
+  const btnLabel = document.getElementById('form-submit-label');
+  const status = document.getElementById('form-status');
+  const honeypot = document.getElementById('form-website');
+  let sending = false;
+
+  function setStatus(msg, kind) {
+    status.textContent = msg;
+    status.className = 'form-status' + (kind ? ' is-' + kind : '');
+  }
+
+  form.addEventListener('submit', function (event) {
     event.preventDefault();
+    if (sending) return;                              // no double submits
 
-    emailjs.sendForm('service_j531c51', 'template_1wmvkqf', this, 'WgEnSGl1i-rW7p16X')
+    // A bot filled the hidden field — pretend it worked, send nothing.
+    if (honeypot && honeypot.value) {
+      setStatus('Thanks — your message has been sent.', 'ok');
+      form.reset();
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      setStatus('Please fill in every field with a valid email address.', 'err');
+      form.reportValidity();
+      return;
+    }
+
+    // The EmailJS bundle is deferred, so it lands after this file runs —
+    // initialise it on first use rather than at load time.
+    if (typeof emailjs === 'undefined') {
+      setStatus('Mail service did not load. Please email me directly instead.', 'err');
+      return;
+    }
+    if (!form.dataset.emailjsReady) {
+      emailjs.init('WgEnSGl1i-rW7p16X');
+      form.dataset.emailjsReady = '1';
+    }
+
+    sending = true;
+    btn.disabled = true;
+    btnLabel.textContent = 'Sending…';
+    setStatus('Sending your message…');
+
+    emailjs.sendForm('service_j531c51', 'template_1wmvkqf', form, 'WgEnSGl1i-rW7p16X')
       .then(function () {
-        alert('Message sent successfully!');
-        document.getElementById('contact-form').reset();
-      }, function (error) {
-        alert('Failed to send message. Please try again.');
+        setStatus('Thanks — your message has been sent. I usually reply within a day.', 'ok');
+        form.reset();
+      })
+      .catch(function (error) {
+        setStatus('Could not send that. Please try again, or email me directly.', 'err');
         console.error('EmailJS error:', error);
+      })
+      .finally(function () {
+        sending = false;
+        btn.disabled = false;
+        btnLabel.textContent = 'Send Message';
       });
   });
 })();
@@ -464,18 +512,30 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ====== LIGHTBOX FOR CERTIFICATES ======
+let lightboxOpener = null;
+
 function openLightbox(src) {
   const overlay = document.getElementById('lightbox-overlay');
   const img = document.getElementById('lightbox-img');
   img.src = src;
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
+  // Remember who opened it so focus can go back there on close.
+  lightboxOpener = document.activeElement;
+  const closeBtn = overlay.querySelector('.lightbox-close');
+  if (closeBtn) closeBtn.focus();
 }
 
 function closeLightbox() {
   const overlay = document.getElementById('lightbox-overlay');
   overlay.classList.remove('active');
   document.body.style.overflow = '';
+  // Send focus back to the tile that opened it, so keyboard users don't
+  // get dropped at the top of the page.
+  if (lightboxOpener && typeof lightboxOpener.focus === 'function') {
+    lightboxOpener.focus();
+    lightboxOpener = null;
+  }
 }
 
 // Close lightbox with Escape key
@@ -491,6 +551,13 @@ document.addEventListener('keydown', (e) => {
   const dot = document.getElementById('cursor-dot');
   const ring = document.getElementById('cursor-ring');
   if (!dot || !ring) return;
+
+  // Only hide the native cursor once we know the replacement is running, and
+  // never for visitors who asked for reduced motion or are on touch.
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!fine || calm) return;
+  document.body.classList.add('custom-cursor-on');
 
   let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
   let dotX = mouseX, dotY = mouseY;
@@ -539,6 +606,8 @@ window.addEventListener('scroll', () => {
 (function() {
   const canvas = document.getElementById('particle-canvas');
   if (!canvas) return;
+  // Skip the whole ambient loop for visitors who asked for reduced motion.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const ctx = canvas.getContext('2d');
 
   let particles = [];

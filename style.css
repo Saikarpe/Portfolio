@@ -117,13 +117,57 @@ body.hovering-link #cursor-ring {
   border-color: var(--accent3);
   background-color: rgba(var(--accent3-rgb), 0.15);
 }
+/* Scoped to .custom-cursor-on, which main.js adds only once the replacement
+   cursor is actually running — if that script fails, the native cursor stays. */
 @media (hover: hover) and (pointer: fine) {
-  body {
+  body.custom-cursor-on {
     cursor: none;
   }
-  a, button, .btn, .btn-home1, .btn-home2, .btn-send, .social-link, .cert-tile, .skills-tab, .patent-card, .c1, .project-card, #chat-toggler, #chat-close-btn, #chat-send-btn, .lightbox-close {
+  body.custom-cursor-on :is(a, button, .btn, .btn-home1, .btn-home2, .btn-send, .social-link, .cert-tile, .skills-tab, .patent-card, .c1, .project-card, #chat-toggler, #chat-close-btn, #chat-send-btn, .lightbox-close) {
     cursor: none;
   }
+}
+body:not(.custom-cursor-on) #cursor-dot,
+body:not(.custom-cursor-on) #cursor-ring {
+  display: none;
+}
+
+/* ===== ACCESSIBILITY HELPERS ===== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form-status {
+  margin-top: 14px;
+  font-size: .9rem;
+  min-height: 1.3em;
+  padding-bottom: 0 !important;
+}
+.form-status.is-ok { color: var(--accent); }
+.form-status.is-err { color: #ef6b75; }
+.btn-send[disabled] { opacity: .65; cursor: progress; }
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* ===== SCROLL PROGRESS BAR ===== */
@@ -290,8 +334,9 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
 .project-card p{color:var(--text-secondary);font-size:.88rem;margin-bottom:12px;line-height:1.5;}
 .project-card .btns{margin-top:auto;}
 .skills{margin-bottom:12px;}
-.skills a{display:inline-block;background:rgba(var(--accent-rgb),.06);color:var(--accent);text-decoration:none;font-size:.78rem;padding:4px 10px;border-radius:6px;margin:3px;border:1px solid rgba(var(--accent-rgb),.1);transition:all .3s;}
-.skills a:hover{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.25);}
+.skills span{display:inline-block;background:rgba(var(--accent-rgb),.06);color:var(--accent);font-size:.78rem;padding:4px 10px;border-radius:6px;margin:3px;border:1px solid rgba(var(--accent-rgb),.1);}
+.btn-muted{background:var(--tint-med);color:var(--text-muted);border:1px dashed var(--glass-border);cursor:default;}
+.btn-muted:hover{background:var(--tint-med);color:var(--text-muted);border-color:var(--glass-border);transform:none;box-shadow:none;}
 .btns{display:flex;justify-content:center;gap:10px;}
 .btn{background:rgba(var(--accent-rgb),.1);color:var(--accent);text-decoration:none;padding:8px 16px;border-radius:25px;font-size:.85rem;transition:all .3s;display:flex;align-items:center;gap:6px;border:1px solid rgba(var(--accent-rgb),.15);font-weight:500;}
 .btn:hover{background:var(--gradient);color:var(--on-accent);border-color:transparent;box-shadow:0 4px 20px rgba(var(--accent-rgb),.25);transform:translateY(-2px);}
@@ -473,7 +518,8 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
 
 /* Patent Highlight */
 .patent-highlight{width:100%;display:flex;justify-content:center;margin-bottom:40px;}
-.patent-card{position:relative;max-width:600px;width:100%;border-radius:20px;overflow:hidden;border:2px solid rgba(251,191,36,.3);background:rgba(251,191,36,.03);cursor:pointer;transition:all .4s ease;}
+.patent-card{position:relative;max-width:600px;width:100%;border-radius:20px;overflow:hidden;border:2px solid rgba(251,191,36,.3);background:rgba(251,191,36,.03);cursor:pointer;transition:all .4s ease;display:block;padding:0;font:inherit;color:inherit;text-align:left;}
+.patent-card:focus-visible,.cert-tile:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
 .patent-card:hover{transform:translateY(-6px);border-color:rgba(251,191,36,.5);box-shadow:0 10px 40px rgba(251,191,36,.15);}
 .patent-badge{position:absolute;top:15px;left:15px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000;padding:6px 16px;border-radius:20px;font-size:.8rem;font-weight:700;z-index:3;display:flex;align-items:center;gap:6px;font-family:var(--font-sub);}
 .patent-card img{width:100%;height:auto;display:block;transition:transform .5s ease;}
@@ -484,7 +530,7 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
 
 /* Certificates Grid Gallery */
 .cert-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px;width:100%;}
-.cert-tile{position:relative;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid var(--glass-border);background:var(--glass-bg);opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),border-color .3s ease,box-shadow .3s ease;}
+.cert-tile{position:relative;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid var(--glass-border);background:var(--glass-bg);opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),border-color .3s ease,box-shadow .3s ease;display:block;width:100%;padding:0;font:inherit;color:inherit;}
 .cert-tile.in-view{opacity:1;transform:translateY(0);}
 .cert-tile img{width:100%;height:170px;display:block;object-fit:cover;transition:transform .5s ease;}
 .cert-tile:hover{transform:translateY(-6px) scale(1.03);border-color:var(--glass-border-hover);box-shadow:var(--glow);z-index:2;}
@@ -596,4 +642,25 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
   .tech-item span{font-size:.7rem;}
   .timeline{padding-left:35px;}
   .timeline-dot{left:-35px;width:28px;height:28px;font-size:.7rem;}
+}
+/* ===== REDUCED MOTION =====
+   Honours the OS "reduce motion" setting: stops the ambient loops and the
+   scroll-reveal transforms, but keeps everything visible and usable. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .orb { animation: none; }
+  .animate-hidden { opacity: 1; transform: none; }
+  .cert-tile { opacity: 1; transform: none; }
+  .skill-ring-card.show { opacity: 1; transform: none; }
+  .tech-item { animation: none; }
+  #particle-canvas { display: none; }
+  #cursor-dot, #cursor-ring { display: none; }
+  body.custom-cursor-on { cursor: auto; }
 }
