@@ -69,15 +69,20 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text-primary)
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--accent),var(--accent3));border-radius:4px;}
 
 /* ===== CUSTOM CURSOR ===== */
+/* Position (transform) is written every frame from JS — left off the
+   transition list so the CSS engine never fights the JS easing loop with
+   its own, which was compounding into visible lag. */
 #cursor-dot {
   width: 8px;
   height: 8px;
   background-color: var(--accent);
   border-radius: 50%;
   position: fixed;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   pointer-events: none;
   z-index: 10000;
+  will-change: transform;
   transition: width 0.3s, height 0.3s, background-color 0.3s;
 }
 #cursor-ring {
@@ -86,10 +91,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text-primary)
   border: 2px solid var(--accent);
   border-radius: 50%;
   position: fixed;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   pointer-events: none;
   z-index: 9999;
-  transition: transform 0.1s ease-out, border-color 0.3s, width 0.3s, height 0.3s;
+  will-change: transform;
+  transition: border-color 0.3s, width 0.3s, height 0.3s, background-color 0.3s;
 }
 body.hovering-link #cursor-dot {
   width: 12px;
@@ -230,11 +237,41 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
 .follow ul a,.follow ul li a{text-decoration:none;color:var(--text-secondary);transition:all .3s;}
 .follow ul a:hover,.follow ul li a:hover{color:var(--accent);transform:translateY(-2px);text-shadow:0 0 12px rgba(var(--accent-rgb),.4);}
 
-/* Spline 3D Robot */
-.spline-wrapper{position:relative;flex-shrink:0;width:480px;height:480px;border-radius:24px;overflow:hidden;border:1px solid var(--glass-border);background:var(--glass-bg-strong);}
-.spline-wrapper iframe{width:100%;height:calc(100% + 80px);border:none;border-radius:24px;}
-.spline-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120%;height:120%;background:radial-gradient(circle,rgba(var(--accent-rgb),.1),transparent 65%);border-radius:24px;z-index:-1;pointer-events:none;animation:splineGlow 4s ease-in-out infinite alternate;}
-@keyframes splineGlow{0%{opacity:.5;transform:translate(-50%,-50%) scale(1);}100%{opacity:1;transform:translate(-50%,-50%) scale(1.05);}}
+/* ===== ENGINEERING CORE VISUAL (hero, replaces the old 3D robot embed) ===== */
+.engine-visual{position:relative;flex-shrink:0;width:480px;height:480px;border-radius:24px;overflow:hidden;border:1px solid var(--glass-border);background:var(--glass-bg-strong);display:flex;align-items:center;justify-content:center;isolation:isolate;will-change:transform;transition:border-color .3s ease;}
+.engine-visual:hover{border-color:var(--glass-border-hover);}
+
+.engine-glow{position:absolute;inset:-15%;background:radial-gradient(circle,rgba(var(--accent-rgb),.22),transparent 65%);filter:blur(12px);z-index:0;animation:engineGlowPulse 4s ease-in-out infinite alternate;pointer-events:none;}
+@keyframes engineGlowPulse{0%{opacity:.55;transform:scale(1);}100%{opacity:1;transform:scale(1.08);}}
+
+.engine-grid{position:absolute;inset:0;z-index:0;opacity:.4;pointer-events:none;
+  background-image:linear-gradient(var(--glass-border) 1px,transparent 1px),linear-gradient(90deg,var(--glass-border) 1px,transparent 1px);
+  background-size:28px 28px;
+  -webkit-mask-image:radial-gradient(circle,#000 55%,transparent 85%);mask-image:radial-gradient(circle,#000 55%,transparent 85%);
+}
+
+.engine-ring{position:absolute;width:72%;height:72%;border:1.5px dashed rgba(var(--accent-rgb),.35);border-radius:50%;z-index:1;animation:engineSpin 30s linear infinite;pointer-events:none;}
+.engine-ring::before,.engine-ring::after{content:'';position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+.engine-ring::before{top:-3px;left:calc(50% - 3px);}
+.engine-ring::after{bottom:-3px;left:calc(50% - 3px);}
+
+.engine-orbit{position:absolute;width:90%;height:90%;z-index:2;animation:engineSpin 22s linear infinite;pointer-events:none;}
+.engine-node{position:absolute;width:52px;height:52px;border-radius:50%;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--accent);box-shadow:var(--glow);animation:engineSpinCentered 22s linear infinite reverse;}
+.engine-node.n1{top:0;left:50%;transform:translate(-50%,-50%);}
+.engine-node.n2{top:78%;left:6%;transform:translate(-50%,-50%);}
+.engine-node.n3{top:78%;left:94%;transform:translate(-50%,-50%);}
+
+.engine-gears{position:relative;z-index:3;width:170px;height:170px;pointer-events:none;}
+.gear{position:absolute;top:50%;left:50%;}
+.gear-big{font-size:118px;color:var(--accent);filter:drop-shadow(0 0 16px rgba(var(--accent-rgb),.4));animation:engineSpinCentered 18s linear infinite;}
+.gear-small{top:66%;left:68%;font-size:58px;color:var(--accent3);filter:drop-shadow(0 0 12px rgba(var(--accent3-rgb),.4));animation:engineSpinCentered 11s linear infinite reverse;}
+
+@keyframes engineSpin{to{transform:rotate(360deg);}}
+@keyframes engineSpinCentered{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+@media(prefers-reduced-motion:reduce){
+  .engine-glow,.engine-ring,.engine-orbit,.engine-node,.gear-big,.gear-small{animation:none;}
+}
 
 /* 3D Tilt Cards */
 .tilt-card{transform-style:preserve-3d;perspective:800px;}
@@ -522,7 +559,7 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
 @media(max-width:1024px){
   .home,.about,.project,.contact,.skills-section,.education-section,.certifications-section{margin-top:120px;margin-bottom:120px;}
   .home-container,.about-container{flex-direction:column;gap:3rem;}
-  .spline-wrapper{width:100%;max-width:420px;height:400px;}
+  .engine-visual{width:100%;max-width:420px;height:400px;}
   .about img{width:100%;height:auto;position:static;}
   .ul-list{flex-wrap:wrap;gap:.6rem;padding:8px 15px;}
   .skills-rings-grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));}
@@ -531,7 +568,10 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
   .home,.about,.project,.contact,.skills-section,.education-section,.certifications-section{margin-top:100px;margin-bottom:100px;text-align:center;}
   .home-container,.about-container,.projects-container,.contact-content,.card{flex-direction:column!important;align-items:center;justify-content:center;gap:2rem;}
   .projects-container{grid-template-columns:1fr;}
-  .spline-wrapper{width:100%;max-width:350px;height:350px;margin:0 auto;}
+  .engine-visual{width:100%;max-width:350px;height:350px;margin:0 auto;}
+  .gear-big{font-size:80px;}
+  .gear-small{font-size:38px;}
+  .engine-node{width:40px;height:40px;font-size:1rem;}
   .about img{width:100%;max-width:300px;height:auto;display:block;margin:0 auto;}
   .btn-home1,.btn-home2,.btn,.btn-send{width:100%;justify-content:center;text-align:center;}
   .btnn{flex-direction:column;align-items:center;}

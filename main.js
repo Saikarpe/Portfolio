@@ -484,42 +484,76 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ====== CUSTOM CURSOR + PHYSICS TRAIL ======
+// Positions are driven entirely through `transform` (GPU-composited) instead
+// of `left`/`top` (which forces a layout reflow on every mousemove and was
+// the actual cause of the visible lag) — one rAF loop, no layout writes.
 (function() {
   const dot = document.getElementById('cursor-dot');
   const ring = document.getElementById('cursor-ring');
   if (!dot || !ring) return;
 
-  let mouseX = 0, mouseY = 0;
-  let ringX = 0, ringY = 0;
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  let dotX = mouseX, dotY = mouseY;
+  let ringX = mouseX, ringY = mouseY;
 
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    
-    // Position dot immediately
-    dot.style.left = mouseX + 'px';
-    dot.style.top = mouseY + 'px';
-  });
+  }, { passive: true });
 
-  // Smooth ring following using animation loop
-  function animateRing() {
-    // Spring physics / easing
+  function animate() {
+    // Dot: snaps close to instantly so the pointer never feels behind.
+    dotX += (mouseX - dotX) * 0.55;
+    dotY += (mouseY - dotY) * 0.55;
+    // Ring: eases in behind it for the trailing "physics" feel.
     ringX += (mouseX - ringX) * 0.15;
     ringY += (mouseY - ringY) * 0.15;
-    
-    ring.style.left = ringX + 'px';
-    ring.style.top = ringY + 'px';
-    
-    requestAnimationFrame(animateRing);
+
+    dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
+    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(animate);
   }
-  animateRing();
+  animate();
 
   // Hover state detection for buttons/links
-  const interactives = document.querySelectorAll('a, button, .btn, .btn-home1, .btn-home2, .btn-send, .social-link, .cert-tile, .skills-tab, .patent-card, .c1, .project-card, #chat-toggler, #chat-close-btn, #chat-send-btn, .lightbox-close');
+  const interactives = document.querySelectorAll('a, button, .btn, .btn-home1, .btn-home2, .btn-send, .social-link, .cert-tile, .skills-tab, .patent-card, .c1, .project-card, #chat-toggler, #chat-close-btn, #chat-send-btn, .lightbox-close, #theme-toggle');
   interactives.forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
   });
+})();
+
+// ====== ENGINEERING CORE — mouse-parallax tilt ======
+// Cheap perspective tilt (transform-only, its own rAF loop) standing in for
+// the old Spline WebGL embed — which rendered a full 3D scene reacting to
+// every mousemove on the page and was the biggest contributor to the lag.
+(function() {
+  const wrap = document.getElementById('engine-visual');
+  if (!wrap) return;
+
+  let targetX = 0, targetY = 0, curX = 0, curY = 0;
+
+  wrap.addEventListener('mousemove', (e) => {
+    const rect = wrap.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    targetX = px * 14;
+    targetY = py * -14;
+  }, { passive: true });
+
+  wrap.addEventListener('mouseleave', () => {
+    targetX = 0;
+    targetY = 0;
+  });
+
+  function tick() {
+    curX += (targetX - curX) * 0.08;
+    curY += (targetY - curY) * 0.08;
+    wrap.style.transform = `perspective(900px) rotateX(${curY}deg) rotateY(${curX}deg)`;
+    requestAnimationFrame(tick);
+  }
+  tick();
 })();
 
 // ====== SCROLL PROGRESS BAR ======
