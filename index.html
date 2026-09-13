@@ -2,6 +2,16 @@
 <html lang="en">
 
 <head>
+  <script>
+    // Apply saved theme before first paint to avoid a flash of the wrong theme.
+    (function () {
+      try {
+        if (localStorage.getItem('theme') === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) { /* ignore */ }
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sai Karpe | AI & ML Engineer</title>
@@ -26,6 +36,11 @@
 
   <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
+
+  <!-- Theme Toggle -->
+  <button id="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+    <i class="fa-solid fa-moon"></i>
+  </button>
 
   <!-- Loading Screen -->
   <div id="loading-screen">

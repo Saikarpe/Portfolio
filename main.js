@@ -724,3 +724,32 @@ window.addEventListener('scroll', () => {
     orb.style.transform = `translateY(${scrollY * speed}px)`;
   });
 });
+
+// ====== THEME TOGGLE (Light / Dark) ======
+(function () {
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (!toggleBtn) return;
+  const root = document.documentElement;
+  const icon = toggleBtn.querySelector('i');
+
+  function getEffectiveTheme() {
+    return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+
+  function updateIcon() {
+    icon.className = getEffectiveTheme() === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const next = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+    if (next === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    try { localStorage.setItem('theme', next); } catch (e) { /* ignore */ }
+    updateIcon();
+  });
+
+  updateIcon();
+})();
