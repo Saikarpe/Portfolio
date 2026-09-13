@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0071e3"/>
+      <stop offset="50%" stop-color="#5e5ce6"/>
+      <stop offset="100%" stop-color="#3d2f8c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <rect width="800" height="450" fill="url(#glow)"/>
+
+  <!-- decorative graph nodes representing a prerequisite/recommendation graph -->
+  <g stroke="#ffffff" stroke-opacity="0.35" stroke-width="2">
+    <line x1="140" y1="330" x2="230" y2="260"/>
+    <line x1="230" y1="260" x2="330" y2="300"/>
+    <line x1="230" y1="260" x2="300" y2="180"/>
+    <line x1="300" y1="180" x2="400" y2="210"/>
+    <line x1="330" y1="300" x2="420" y2="260"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="140" cy="330" r="7" fill-opacity="0.55"/>
+    <circle cx="230" cy="260" r="9" fill-opacity="0.75"/>
+    <circle cx="330" cy="300" r="7" fill-opacity="0.55"/>
+    <circle cx="300" cy="180" r="7" fill-opacity="0.55"/>
+    <circle cx="400" cy="210" r="7" fill-opacity="0.55"/>
+    <circle cx="420" cy="260" r="7" fill-opacity="0.55"/>
+  </g>
+
+  <!-- server / engine icon -->
+  <g transform="translate(566,150)">
+    <rect x="0" y="0" width="130" height="150" rx="14" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2.5"/>
+    <rect x="18" y="22" width="94" height="24" rx="6" fill="#ffffff" fill-opacity="0.85"/>
+    <rect x="18" y="63" width="94" height="24" rx="6" fill="#ffffff" fill-opacity="0.6"/>
+    <rect x="18" y="104" width="94" height="24" rx="6" fill="#ffffff" fill-opacity="0.6"/>
+    <circle cx="30" cy="34" r="4" fill="#2997ff"/>
+    <circle cx="30" cy="75" r="4" fill="#2997ff"/>
+    <circle cx="30" cy="116" r="4" fill="#2997ff"/>
+  </g>
+
+  <text x="64" y="120" font-family="Inter, -apple-system, Segoe UI, sans-serif" font-size="46" font-weight="700" fill="#ffffff">PathWise AI</text>
+  <text x="64" y="160" font-family="Inter, -apple-system, Segoe UI, sans-serif" font-size="21" font-weight="500" fill="#ffffff" fill-opacity="0.85">Backend &amp; Recommendation Engine</text>
+
+  <g font-family="Inter, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#ffffff">
+    <rect x="64" y="385" width="86" height="30" rx="15" fill="#ffffff" fill-opacity="0.16"/>
+    <text x="80" y="405" fill-opacity="0.95">FastAPI</text>
+    <rect x="160" y="385" width="112" height="30" rx="15" fill="#ffffff" fill-opacity="0.16"/>
+    <text x="176" y="405" fill-opacity="0.95">scikit-learn</text>
+    <rect x="282" y="385" width="112" height="30" rx="15" fill="#ffffff" fill-opacity="0.16"/>
+    <text x="298" y="405" fill-opacity="0.95">networkx</text>
+  </g>
+</svg>

@@ -363,14 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (entry.isIntersecting) {
         entry.target.classList.add('in-view');
 
-        // Animate skill bars when their parent comes into view
-        const skillBars = entry.target.querySelectorAll('.skill-bar-fill');
-        skillBars.forEach(bar => {
-          const targetWidth = bar.getAttribute('data-width');
-          setTimeout(() => {
-            bar.style.width = targetWidth + '%';
-          }, 300);
-        });
+        // Kick off the radial skill rings once the section is on screen
+        if (entry.target.classList.contains('skills-tabs-wrapper')) {
+          setTimeout(() => animateVisibleRings(), 300);
+        }
 
         observer.unobserve(entry.target);
       }
@@ -379,7 +375,94 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const animElements = document.querySelectorAll('.animate-hidden');
   animElements.forEach(el => observer.observe(el));
+
+  // Reveal certificate tiles as they scroll into view
+  const certObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+
+  document.querySelectorAll('.cert-tile').forEach((tile, i) => {
+    tile.style.transitionDelay = `${Math.min(i % 8, 8) * 40}ms`;
+    certObserver.observe(tile);
+  });
 });
+
+// ====== SKILLS RADIAL RINGS ======
+const RING_CIRCUMFERENCE = 2 * Math.PI * 52; // matches r=52 in the SVG markup
+
+function animateSkillRing(card) {
+  const percent = parseFloat(card.getAttribute('data-percent')) || 0;
+  const fill = card.querySelector('.ring-fill');
+  const percentLabel = card.querySelector('.ring-percent');
+  if (!fill || !percentLabel || card.dataset.animated === 'true') return;
+  card.dataset.animated = 'true';
+
+  const offset = RING_CIRCUMFERENCE - (percent / 100) * RING_CIRCUMFERENCE;
+  fill.style.transition = 'none';
+  fill.style.strokeDashoffset = RING_CIRCUMFERENCE;
+
+  requestAnimationFrame(() => {
+    fill.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(.25,.8,.25,1)';
+    fill.style.strokeDashoffset = offset;
+  });
+
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min((now - start) / duration, 1);
+    percentLabel.textContent = Math.round(t * percent) + '%';
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function animateVisibleRings() {
+  document.querySelectorAll('.skill-ring-card.show').forEach(card => {
+    card.classList.add('in');
+    animateSkillRing(card);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.querySelectorAll('.skills-tab');
+  const cards = document.querySelectorAll('.skill-ring-card');
+  if (!tabs.length || !cards.length) return;
+
+  // Show the first (active) category's cards on load
+  cards.forEach(card => {
+    if (card.getAttribute('data-category') === 'ai') {
+      card.classList.add('show');
+    }
+  });
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      if (tab.classList.contains('active')) return;
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+
+      const category = tab.getAttribute('data-category');
+      cards.forEach(card => {
+        if (card.getAttribute('data-category') === category) {
+          card.classList.add('show');
+          requestAnimationFrame(() => card.classList.add('in'));
+        } else {
+          card.classList.remove('show', 'in');
+        }
+      });
+
+      // Animate the newly-shown rings on first reveal
+      requestAnimationFrame(() => animateVisibleRings());
+    });
+  });
+});
+
 // ====== LIGHTBOX FOR CERTIFICATES ======
 function openLightbox(src) {
   const overlay = document.getElementById('lightbox-overlay');
@@ -398,104 +481,6 @@ function closeLightbox() {
 // Close lightbox with Escape key
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeLightbox();
-});
-
-// ====== CERTIFICATE CAROUSEL ======
-document.addEventListener('DOMContentLoaded', () => {
-  const slides = document.querySelectorAll('.cert-slide');
-  const prevBtn = document.getElementById('cert-prev');
-  const nextBtn = document.getElementById('cert-next');
-  const counter = document.getElementById('cert-counter');
-  let currentSlide = 0;
-  let autoPlayInterval;
-  let isAnimating = false;
-
-  function showSlide(index, direction) {
-    if (isAnimating || index === currentSlide) return;
-    isAnimating = true;
-
-    const outgoing = slides[currentSlide];
-    const incoming = slides[index];
-
-    // Slide out the current one
-    outgoing.classList.remove('active');
-    outgoing.classList.add(direction === 'next' ? 'slide-out-left' : 'slide-out-right');
-
-    // Prepare incoming from the opposite side
-    incoming.style.transition = 'none';
-    incoming.style.transform = direction === 'next' ? 'translateX(40px)' : 'translateX(-40px)';
-    incoming.style.opacity = '0';
-
-    // Force reflow then animate in
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        incoming.style.transition = 'opacity .7s ease, transform .7s ease';
-        incoming.classList.add('active');
-        incoming.style.transform = '';
-        incoming.style.opacity = '';
-      });
-    });
-
-    currentSlide = index;
-    counter.textContent = `${currentSlide + 1} / ${slides.length}`;
-
-    // Cleanup after transition
-    setTimeout(() => {
-      outgoing.classList.remove('slide-out-left', 'slide-out-right');
-      isAnimating = false;
-    }, 750);
-  }
-
-  function nextSlide() {
-    const next = (currentSlide + 1) % slides.length;
-    showSlide(next, 'next');
-  }
-
-  function prevSlide() {
-    const prev = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(prev, 'prev');
-  }
-
-  // Initialize first slide
-  slides[0].classList.add('active');
-  counter.textContent = `1 / ${slides.length}`;
-
-  // Button events
-  nextBtn.addEventListener('click', () => {
-    nextSlide();
-    resetAutoPlay();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    prevSlide();
-    resetAutoPlay();
-  });
-
-  // Keyboard navigation (arrows)
-  document.addEventListener('keydown', (e) => {
-    if (document.getElementById('lightbox-overlay').classList.contains('active')) return;
-    if (e.key === 'ArrowRight') { nextSlide(); resetAutoPlay(); }
-    if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
-  });
-
-  // Auto-play (6 seconds)
-  function startAutoPlay() {
-    autoPlayInterval = setInterval(nextSlide, 6000);
-  }
-
-  function resetAutoPlay() {
-    clearInterval(autoPlayInterval);
-    startAutoPlay();
-  }
-
-  startAutoPlay();
-
-  // Pause auto-play on hover
-  const carouselWrapper = document.querySelector('.cert-carousel-wrapper');
-  if (carouselWrapper) {
-    carouselWrapper.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
-    carouselWrapper.addEventListener('mouseleave', () => startAutoPlay());
-  }
 });
 
 // ====== CUSTOM CURSOR + PHYSICS TRAIL ======
@@ -530,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
   animateRing();
 
   // Hover state detection for buttons/links
-  const interactives = document.querySelectorAll('a, button, .btn, .btn-home1, .btn-home2, .btn-send, .social-link, .cert-slide, .patent-card, .c1, .project-card, #chat-toggler, #chat-close-btn, #chat-send-btn, .lightbox-close, .cert-nav');
+  const interactives = document.querySelectorAll('a, button, .btn, .btn-home1, .btn-home2, .btn-send, .social-link, .cert-tile, .skills-tab, .patent-card, .c1, .project-card, #chat-toggler, #chat-close-btn, #chat-send-btn, .lightbox-close');
   interactives.forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));

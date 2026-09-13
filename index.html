@@ -191,7 +191,7 @@
       <div class="stats-container">
         <div class="stat-item animate-hidden delay-100">
           <div class="stat-icon"><i class="fa-solid fa-folder-open"></i></div>
-          <h2 class="stat-number" data-target="8" data-suffix="+">0</h2>
+          <h2 class="stat-number" data-target="10" data-suffix="+">0</h2>
           <p>Projects Built</p>
         </div>
         <div class="stat-item animate-hidden delay-200">
@@ -223,81 +223,138 @@
         <hr>
       </div>
 
-      <!-- Skills Progress Bars -->
-      <div class="skills-grid animate-hidden delay-300">
-        <div class="skills-category">
-          <h3><i class="fa-solid fa-brain"></i> AI / ML & Data Science</h3>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>Python</span><span>88%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="88"></div>
-            </div>
-          </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>Machine Learning</span><span>80%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="80"></div>
-            </div>
-          </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>Data Science</span><span>75%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="75"></div>
-            </div>
-          </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>DSA (Java)</span><span>72%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="72"></div>
-            </div>
-          </div>
+      <!-- Skills Radial Rings -->
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <linearGradient id="skillRingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--accent)" />
+            <stop offset="100%" stop-color="var(--accent2)" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="skills-tabs-wrapper animate-hidden delay-300">
+        <div class="skills-tabs" role="tablist">
+          <button class="skills-tab active" data-category="ai" role="tab" aria-selected="true"><i
+              class="fa-solid fa-brain"></i> AI / ML & Data Science</button>
+          <button class="skills-tab" data-category="frontend" role="tab" aria-selected="false"><i
+              class="fa-solid fa-code"></i> Frontend</button>
+          <button class="skills-tab" data-category="backend" role="tab" aria-selected="false"><i
+              class="fa-solid fa-server"></i> Backend & Databases</button>
         </div>
-        <div class="skills-category">
-          <h3><i class="fa-solid fa-code"></i> Frontend</h3>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>HTML</span><span>92%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="92"></div>
+        <div class="skills-rings-grid">
+          <!-- AI / ML & Data Science -->
+          <div class="skill-ring-card" data-category="ai" data-percent="88">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-python"></i><span class="ring-percent">0%</span></div>
             </div>
+            <h4>Python</h4>
           </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>CSS</span><span>88%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="88"></div>
+          <div class="skill-ring-card" data-category="ai" data-percent="80">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-solid fa-diagram-project"></i><span class="ring-percent">0%</span>
+              </div>
             </div>
+            <h4>Machine Learning</h4>
           </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>JavaScript</span><span>78%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="78"></div>
+          <div class="skill-ring-card" data-category="ai" data-percent="75">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-solid fa-chart-line"></i><span class="ring-percent">0%</span></div>
             </div>
+            <h4>Data Science</h4>
           </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>Angular</span><span>65%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="65"></div>
+          <div class="skill-ring-card" data-category="ai" data-percent="72">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-java"></i><span class="ring-percent">0%</span></div>
             </div>
+            <h4>DSA (Java)</h4>
           </div>
-        </div>
-        <div class="skills-category">
-          <h3><i class="fa-solid fa-server"></i> Backend & Databases</h3>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>PHP</span><span>70%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="70"></div>
+          <!-- Frontend -->
+          <div class="skill-ring-card" data-category="frontend" data-percent="92">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-html5"></i><span class="ring-percent">0%</span></div>
             </div>
+            <h4>HTML</h4>
           </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>SQL / MySQL</span><span>78%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="78"></div>
+          <div class="skill-ring-card" data-category="frontend" data-percent="88">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-css3-alt"></i><span class="ring-percent">0%</span></div>
             </div>
+            <h4>CSS</h4>
           </div>
-          <div class="skill-bar-item">
-            <div class="skill-bar-header"><span>Git & GitHub</span><span>82%</span></div>
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" data-width="82"></div>
+          <div class="skill-ring-card" data-category="frontend" data-percent="78">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-js"></i><span class="ring-percent">0%</span></div>
             </div>
+            <h4>JavaScript</h4>
+          </div>
+          <div class="skill-ring-card" data-category="frontend" data-percent="65">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-angular"></i><span class="ring-percent">0%</span></div>
+            </div>
+            <h4>Angular</h4>
+          </div>
+          <!-- Backend & Databases -->
+          <div class="skill-ring-card" data-category="backend" data-percent="70">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-php"></i><span class="ring-percent">0%</span></div>
+            </div>
+            <h4>PHP</h4>
+          </div>
+          <div class="skill-ring-card" data-category="backend" data-percent="78">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-solid fa-database"></i><span class="ring-percent">0%</span></div>
+            </div>
+            <h4>SQL / MySQL</h4>
+          </div>
+          <div class="skill-ring-card" data-category="backend" data-percent="82">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+                <circle class="ring-fill" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="ring-center"><i class="fa-brands fa-git-alt"></i><span class="ring-percent">0%</span></div>
+            </div>
+            <h4>Git & GitHub</h4>
           </div>
         </div>
       </div>
@@ -394,74 +451,69 @@
         </div>
       </div>
 
-      <!-- Certificates Carousel -->
-      <div class="cert-carousel-wrapper">
-        <button class="cert-nav cert-prev" id="cert-prev"><i class="fa-solid fa-chevron-left"></i></button>
-        <div class="cert-carousel" id="cert-carousel">
-          <div class="cert-slide" onclick="openLightbox('cert1.jpg')">
-            <img src="cert1.jpg" alt="Certificate 1" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert2.jpg')">
-            <img src="cert2.jpg" alt="Certificate 2" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert3.png')">
-            <img src="cert3.png" alt="Certificate 3" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert4.jpg')">
-            <img src="cert4.jpg" alt="Certificate 4" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert5.jpg')">
-            <img src="cert5.jpg" alt="Certificate 5" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert6.jpg')">
-            <img src="cert6.jpg" alt="Certificate 6" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert7.jpg')">
-            <img src="cert7.jpg" alt="Certificate 7" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert8.jpg')">
-            <img src="cert8.jpg" alt="Certificate 8" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert9.png')">
-            <img src="cert9.png" alt="Certificate 9" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert10.jpg')">
-            <img src="cert10.jpg" alt="Certificate 10" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert11.jpg')">
-            <img src="cert11.jpg" alt="Certificate 11" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert12.jpg')">
-            <img src="cert12.jpg" alt="Certificate 12" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert13.jpg')">
-            <img src="cert13.jpg" alt="Certificate 13" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert14.png')">
-            <img src="cert14.png" alt="Certificate 14" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
-          <div class="cert-slide" onclick="openLightbox('cert15.jpg')">
-            <img src="cert15.jpg" alt="Certificate 15" loading="lazy">
-            <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>Click to view</span></div>
-          </div>
+      <!-- Certificates Grid Gallery -->
+      <div class="cert-gallery-grid">
+        <div class="cert-tile" onclick="openLightbox('cert1.jpg')">
+          <img src="cert1.jpg" alt="Certificate 1" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
         </div>
-        <button class="cert-nav cert-next" id="cert-next"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="cert-tile" onclick="openLightbox('cert2.jpg')">
+          <img src="cert2.jpg" alt="Certificate 2" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert3.png')">
+          <img src="cert3.png" alt="Certificate 3" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert4.jpg')">
+          <img src="cert4.jpg" alt="Certificate 4" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert5.jpg')">
+          <img src="cert5.jpg" alt="Certificate 5" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert6.jpg')">
+          <img src="cert6.jpg" alt="Certificate 6" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert7.jpg')">
+          <img src="cert7.jpg" alt="Certificate 7" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert8.jpg')">
+          <img src="cert8.jpg" alt="Certificate 8" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert9.png')">
+          <img src="cert9.png" alt="Certificate 9" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert10.jpg')">
+          <img src="cert10.jpg" alt="Certificate 10" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert11.jpg')">
+          <img src="cert11.jpg" alt="Certificate 11" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert12.jpg')">
+          <img src="cert12.jpg" alt="Certificate 12" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert13.jpg')">
+          <img src="cert13.jpg" alt="Certificate 13" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert14.png')">
+          <img src="cert14.png" alt="Certificate 14" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
+        <div class="cert-tile" onclick="openLightbox('cert15.jpg')">
+          <img src="cert15.jpg" alt="Certificate 15" loading="lazy">
+          <div class="cert-overlay"><i class="fa-solid fa-expand"></i><span>View</span></div>
+        </div>
       </div>
-      <div class="cert-counter" id="cert-counter">1 / 15</div>
     </section>
 
     <!-- Projects Section -->
@@ -474,6 +526,36 @@
         <p>development, modern frameworks, and creative problem-solving.</p>
       </div>
       <div class="projects-container">
+
+        <div class="project-card animate-hidden delay-100">
+          <img src="PathWise.svg" alt="PathWise AI Learning Path Recommender">
+          <h3>PathWise AI</h3>
+          <p>AI learning-path recommender that turns plain-English goals into prerequisite-ordered roadmaps, with a FastAPI/ML backend and a React dashboard for progress tracking.</p>
+          <div class="skills">
+            <a href="#">FastAPI</a>
+            <a href="#">scikit-learn</a>
+            <a href="#">React 19</a>
+          </div>
+          <div class="btns">
+            <a href="https://github.com/Saikarpe/PathWise" class="btn" target="_blank"><i
+                class="fab fa-github"></i> GitHub</a>
+          </div>
+        </div>
+
+        <div class="project-card animate-hidden delay-100">
+          <img src="AIRiskManager.svg" alt="AI Risk Manager Transaction Risk Scoring">
+          <h3>AI Risk Manager</h3>
+          <p>ML-powered transaction risk scoring system that flags high return/dispute-risk orders at the moment of purchase, using an XGBoost classifier with cost-curve threshold tuning.</p>
+          <div class="skills">
+            <a href="#">XGBoost</a>
+            <a href="#">FastAPI</a>
+            <a href="#">scikit-learn</a>
+          </div>
+          <div class="btns">
+            <a href="https://github.com/Saikarpe/AI_Risk_Manager" class="btn" target="_blank"><i
+                class="fab fa-github"></i> GitHub</a>
+          </div>
+        </div>
 
         <div class="project-card animate-hidden delay-100">
           <img src="Jarvis.png" alt="JARVIS AI Voice Assistant">

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff375f"/>
+      <stop offset="55%" stop-color="#5e5ce6"/>
+      <stop offset="100%" stop-color="#0071e3"/>
+    </linearGradient>
+    <radialGradient id="glow3" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg3)"/>
+  <rect width="800" height="450" fill="url(#glow3)"/>
+
+  <!-- shield / risk score gauge -->
+  <g transform="translate(560,110)">
+    <path d="M90 0 L172 30 V110 C172 165 136 205 90 225 C44 205 8 165 8 110 V30 Z"
+      fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.6" stroke-width="3"/>
+    <path d="M90 30 L142 50 V108 C142 148 118 178 90 194 C62 178 38 148 38 108 V50 Z"
+      fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="2.5"/>
+    <!-- gauge arc -->
+    <path d="M55 118 A45 45 0 1 1 125 118" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="10" stroke-linecap="round"/>
+    <path d="M55 118 A45 45 0 0 1 108 84" fill="none" stroke="#ff375f" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="90" cy="118" r="6" fill="#ffffff"/>
+    <line x1="90" y1="118" x2="112" y2="92" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <text x="64" y="120" font-family="Inter, -apple-system, Segoe UI, sans-serif" font-size="42" font-weight="700" fill="#ffffff">AI Risk Manager</text>
+  <text x="64" y="160" font-family="Inter, -apple-system, Segoe UI, sans-serif" font-size="21" font-weight="500" fill="#ffffff" fill-opacity="0.9">Transaction Risk Scoring Engine</text>
+
+  <g font-family="Inter, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#ffffff">
+    <rect x="64" y="385" width="104" height="30" rx="15" fill="#ffffff" fill-opacity="0.18"/>
+    <text x="80" y="405" fill-opacity="0.95">XGBoost</text>
+    <rect x="178" y="385" width="102" height="30" rx="15" fill="#ffffff" fill-opacity="0.18"/>
+    <text x="194" y="405" fill-opacity="0.95">FastAPI</text>
+    <rect x="290" y="385" width="140" height="30" rx="15" fill="#ffffff" fill-opacity="0.18"/>
+    <text x="306" y="405" fill-opacity="0.95">scikit-learn</text>
+  </g>
+</svg>
