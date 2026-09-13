@@ -52,7 +52,7 @@ backToTop.style.cssText = `
   position: fixed;
   bottom: 40px;
   right: 40px;
-  background: linear-gradient(135deg, #00e5ff, #3d8bff);
+  background: var(--gradient);
   color: white;
   width: 50px;
   height: 50px;
@@ -63,7 +63,7 @@ backToTop.style.cssText = `
   cursor: pointer;
   z-index: 1000;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.3);
   font-size: 16px;
 `;
 
@@ -73,11 +73,11 @@ backToTop.addEventListener('click', () => {
 
 backToTop.addEventListener('mouseover', () => {
   backToTop.style.transform = 'scale(1.15)';
-  backToTop.style.boxShadow = '0 6px 30px rgba(0, 229, 255, 0.5)';
+  backToTop.style.boxShadow = '0 6px 30px rgba(var(--accent-rgb), 0.5)';
 });
 backToTop.addEventListener('mouseout', () => {
   backToTop.style.transform = 'scale(1)';
-  backToTop.style.boxShadow = '0 4px 20px rgba(0, 229, 255, 0.3)';
+  backToTop.style.boxShadow = '0 4px 20px rgba(var(--accent-rgb), 0.3)';
 });
 
 // 3D TILT CARD EFFECT
@@ -108,7 +108,7 @@ function initTiltCards() {
       // Move shine based on mouse
       const shineX = (x / rect.width) * 100;
       const shineY = (y / rect.height) * 100;
-      shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(0,229,255,0.08) 0%, transparent 60%)`;
+      shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(var(--accent-rgb),0.08) 0%, transparent 60%)`;
       shine.style.opacity = '1';
     });
 
@@ -524,38 +524,6 @@ document.addEventListener('keydown', (e) => {
   });
 })();
 
-// ====== ENGINEERING CORE — mouse-parallax tilt ======
-// Cheap perspective tilt (transform-only, its own rAF loop) standing in for
-// the old Spline WebGL embed — which rendered a full 3D scene reacting to
-// every mousemove on the page and was the biggest contributor to the lag.
-(function() {
-  const wrap = document.getElementById('engine-visual');
-  if (!wrap) return;
-
-  let targetX = 0, targetY = 0, curX = 0, curY = 0;
-
-  wrap.addEventListener('mousemove', (e) => {
-    const rect = wrap.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    targetX = px * 14;
-    targetY = py * -14;
-  }, { passive: true });
-
-  wrap.addEventListener('mouseleave', () => {
-    targetX = 0;
-    targetY = 0;
-  });
-
-  function tick() {
-    curX += (targetX - curX) * 0.08;
-    curY += (targetY - curY) * 0.08;
-    wrap.style.transform = `perspective(900px) rotateX(${curY}deg) rotateY(${curX}deg)`;
-    requestAnimationFrame(tick);
-  }
-  tick();
-})();
-
 // ====== SCROLL PROGRESS BAR ======
 window.addEventListener('scroll', () => {
   const scrollProgress = document.getElementById('scroll-progress');
@@ -575,6 +543,9 @@ window.addEventListener('scroll', () => {
 
   let particles = [];
   let mouse = { x: null, y: null, radius: 100 };
+  // Cached once per animation frame (not per-particle) so particles follow
+  // the active theme's accent color without a getComputedStyle() call per dot.
+  let accentRgb = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '255,167,38';
 
   // Track mouse coordinates relative to viewport
   window.addEventListener('mousemove', (e) => {
@@ -605,7 +576,7 @@ window.addEventListener('scroll', () => {
     }
 
     draw() {
-      ctx.fillStyle = 'rgba(0, 229, 255, 0.45)';
+      ctx.fillStyle = `rgba(${accentRgb}, 0.45)`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.closePath();
@@ -658,7 +629,7 @@ window.addEventListener('scroll', () => {
         
         if (distance < 120) {
           let opacity = (1 - (distance / 120)) * 0.15;
-          ctx.strokeStyle = `rgba(0, 229, 255, ${opacity})`;
+          ctx.strokeStyle = `rgba(${accentRgb}, ${opacity})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(particles[a].x, particles[a].y);
@@ -678,6 +649,13 @@ window.addEventListener('scroll', () => {
     connectParticles();
     requestAnimationFrame(animate);
   }
+
+  // Re-read the accent color only when the theme actually changes (see the
+  // 'themechange' event dispatched by the theme-toggle below) instead of
+  // every frame — keeps this a plain, cheap CSS-var read.
+  window.addEventListener('themechange', () => {
+    accentRgb = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || accentRgb;
+  });
 
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
@@ -783,6 +761,9 @@ window.addEventListener('scroll', () => {
     }
     try { localStorage.setItem('theme', next); } catch (e) { /* ignore */ }
     updateIcon();
+    // Lets canvas-drawn UI (the particle background) that can't use CSS
+    // vars directly re-read the new accent color.
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
   });
 
   updateIcon();
