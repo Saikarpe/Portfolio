@@ -559,7 +559,11 @@ header{position:fixed;top:0;left:0;width:100%;z-index:1000;}
 /* ===== CHAT WIDGET ===== */
 #chat-toggler{position:fixed;bottom:110px;right:40px;background:var(--gradient);color:var(--on-accent);width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;z-index:1001;transition:all .3s;box-shadow:0 4px 25px rgba(var(--accent-rgb),.3);}
 #chat-toggler:hover{transform:scale(1.1);box-shadow:var(--glow-strong);}
-#chat-widget{position:fixed;bottom:110px;right:40px;width:360px;max-height:450px;background:var(--glass-bg-strong);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;z-index:1000;overflow:hidden;opacity:0;transform:translateY(20px) scale(.95);pointer-events:none;transition:all .3s ease;}
+/* bottom is toggler-bottom (110px) + toggler-height (60px) + a gap, so the
+   open widget sits fully above the toggle button instead of overlapping it
+   — the two used to share the same anchor point, which hid the send button
+   under the toggler and made it unclickable. */
+#chat-widget{position:fixed;bottom:184px;right:40px;width:360px;max-height:450px;background:var(--glass-bg-strong);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;z-index:1000;overflow:hidden;opacity:0;transform:translateY(20px) scale(.95);pointer-events:none;transition:all .3s ease;}
 #chat-widget.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
 #chat-header{background:var(--gradient);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;}
 #chat-header h3{margin:0;font-size:1rem;color:var(--on-accent);font-family:var(--font-sub);}
